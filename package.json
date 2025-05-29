@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-  "start": "node index.js",
-  "test": "echo \"Error: no test specified\" && exit 1"
-},
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Peterson1979/vidzly-backend.git"
@@ -19,6 +19,8 @@
   "homepage": "https://github.com/Peterson1979/vidzly-backend#readme",
   "description": "",
   "dependencies": {
-    "express": "^5.1.0"
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "node-fetch": "^3.3.2"
   }
 }
