@@ -1,26 +1,22 @@
 {
   "name": "vidzly-backend",
   "version": "1.0.0",
+  "description": "Backend for Vidzly application",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Peterson1979/vidzly-backend.git"
-  },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "vidzly",
+    "backend",
+    "express"
+  ],
+  "author": "Your Name",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Peterson1979/vidzly-backend/issues"
-  },
-  "homepage": "https://github.com/Peterson1979/vidzly-backend#readme",
-  "description": "",
   "dependencies": {
     "cors": "^2.8.5",
-    "express": "^5.1.0",
-    "node-fetch": "^3.3.2"
+    "express": "^4.18.2",
+    "node-fetch": "^2.6.7"
   }
 }
