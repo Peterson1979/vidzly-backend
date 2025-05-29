@@ -37,7 +37,8 @@ app.get('/api/reddit/:subredditName', async (req, res) => {
   try {
     const redditResponse = await fetch(redditApiUrl, {
         headers: {
-            'User-Agent': 'VidzlyApp/1.0 (Backend Proxy by /u/YourRedditUsernameIfAny)' // It's good practice to set a User-Agent
+            // More specific User-Agent for Reddit API
+            'User-Agent': 'node:vidzly.proxy.app:v1.0 (by /u/peterson7906)'
         }
     });
 
