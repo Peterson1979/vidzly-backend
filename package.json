@@ -1,22 +1,18 @@
 {
   "name": "vidzly-backend",
   "version": "1.0.0",
-  "description": "Backend for Vidzly application",
-  "main": "index.js",
+  "description": "Backend for Vidzly application, proxies Reddit API with Vercel KV caching.",
+  "main": "server.js",
   "scripts": {
-    "start": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server.js"
   },
-  "keywords": [
-    "vidzly",
-    "backend",
-    "express"
-  ],
-  "author": "Your Name",
-  "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
-    "express": "^4.18.2",
-    "node-fetch": "^2.6.7"
+    "express": "^4.19.2",
+    "node-fetch": "^2.7.0",
+    "@vercel/kv": "^2.0.0"
+  },
+  "engines": {
+    "node": "18.x"
   }
 }
