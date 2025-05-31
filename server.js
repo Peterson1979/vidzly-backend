@@ -1,6 +1,6 @@
 // Forcing a fresh Vercel deployment - attempt 3
 
-// ... rest of your server.js
+// Ensure all require statements are at the top and not duplicated.
 const express = require('express');
 const cors = require('cors');
 const fetch = require('node-fetch'); // Using node-fetch v2 for CommonJS compatibility
@@ -25,10 +25,10 @@ if (process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN) {
 const CACHE_TTL_SECONDS = 5 * 60; // 5 minutes Time-To-Live for cache
 
 app.use(cors());
-app.use(express.json());
+app.use(express.json()); // Middleware to parse JSON bodies
 
 const port = process.env.PORT || 3001;
-const REDDIT_USER_AGENT = 'VidzlyPublicClient/1.0 (by /u/peterson7906)';
+const REDDIT_USER_AGENT = 'VidzlyPublicClient/1.0 (by /u/peterson7906)'; // Replace with your Reddit username if you have one
 
 app.get('/api', (req, res) => {
   res.json({ message: 'Hello from the Vidzly Backend! Public API only with Vercel KV Caching.' });
@@ -42,7 +42,7 @@ app.get('/api/redditProxy/:subredditName', async (req, res) => {
   const { subredditName } = req.params;
   const { limit = 25, after = '' } = req.query; // Default after to empty string for consistent cache key
 
-  const cacheKey = `reddit:${subredditName}:limit${limit}:after${after}`;
+  const cacheKey = `reddit:${subredditName}:limit${limit}:after${String(after)}`; // Ensure 'after' is a string for the key
 
   if (kvClient) {
     try {
@@ -61,7 +61,7 @@ app.get('/api/redditProxy/:subredditName', async (req, res) => {
   const headers = { 'User-Agent': REDDIT_USER_AGENT };
   let redditUrlBase = `https://www.reddit.com/r/${subredditName}/top.json?raw_json=1&t=all`;
   let fullRedditUrl = `${redditUrlBase}&limit=${limit}`;
-  if (after) { // Only add 'after' if it's not an empty string
+  if (after) { // Only add 'after' if it's not an empty string and not 'null' or 'undefined' literally
     fullRedditUrl += `&after=${after}`;
   }
 
@@ -79,9 +79,8 @@ app.get('/api/redditProxy/:subredditName', async (req, res) => {
     }
     const redditData = await redditResponse.json();
 
-    if (kvClient && redditData) {
+    if (kvClient && redditData && Object.keys(redditData).length > 0) { // Ensure redditData is not empty
       try {
-        // Store in cache with TTL
         await kvClient.set(cacheKey, redditData, { ex: CACHE_TTL_SECONDS });
         console.log(`CACHE: SET for ${cacheKey} with TTL ${CACHE_TTL_SECONDS}s`);
       } catch (kvError) {
@@ -98,11 +97,21 @@ app.get('/api/redditProxy/:subredditName', async (req, res) => {
   }
 });
 
+// Catch-all for other /api routes not defined
 app.use('/api/*', (req, res) => {
   res.status(404).json({ error: 'API endpoint not found' });
 });
 
-app.listen(port, () => {
-  console.log(`Vidzly backend (with Vercel KV caching) listening on http://localhost:${port}`);
-  console.log(`Current NODE_ENV: ${process.env.NODE_ENV || 'development (default)'}`);
-});
+// This app.listen is primarily for local development.
+// Vercel handles the listening part when deployed as a serverless function.
+if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
+  app.listen(port, () => {
+    console.log(`Vidzly backend (with Vercel KV caching) listening on http://localhost:${port}`);
+  });
+}
+console.log(`Backend server.js loaded. Current NODE_ENV: ${process.env.NODE_ENV || 'development (default)'}`);
+console.log(`Vercel env: ${process.env.VERCEL}`);
+
+
+// Export the app for Vercel's serverless environment
+module.exports = app;
