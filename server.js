@@ -1,4 +1,6 @@
-
+// Forcing a fresh Vercel deployment - attempt 3
+const express = require('express');
+// ... rest of your server.js
 const express = require('express');
 const cors = require('cors');
 const fetch = require('node-fetch'); // Using node-fetch v2 for CommonJS compatibility
