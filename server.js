@@ -1,5 +1,4 @@
 // server.js
-// Ensure all require statements are at the top and not duplicated.
 const express = require('express');
 const cors = require('cors');
 const fetch = require('node-fetch'); // Using node-fetch v2 for CommonJS compatibility
@@ -25,8 +24,8 @@ app.use(cors());
 app.use(express.json()); // Middleware to parse JSON bodies
 
 const port = process.env.PORT || 3001;
-// Trying a slightly different User-Agent format
-const REDDIT_USER_AGENT = 'desktop:com.vidzly.app:v1.0.2 (by /u/peterson7906)';
+// Using a very generic browser User-Agent as a last resort for 403 errors
+const REDDIT_USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36';
 
 app.get('/api', (req, res) => {
   res.json({ message: 'Hello from the Vidzly Backend! Public API only with Vercel KV Caching.' });
@@ -98,6 +97,8 @@ app.use('/api/*', (req, res) => {
   res.status(404).json({ error: 'API endpoint not found' });
 });
 
+// This app.listen is primarily for local development.
+// Vercel handles the listening part when deployed as a serverless function.
 if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
   app.listen(port, () => {
     console.log(`Vidzly backend (with Vercel KV caching) listening on http://localhost:${port}`);
