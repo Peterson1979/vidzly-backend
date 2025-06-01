@@ -1,7 +1,7 @@
 {
   "name": "vidzly-backend",
   "version": "1.0.0",
-  "description": "Backend for Vidzly application, proxies Reddit API with Vercel KV caching.",
+  "description": "Backend for Vidzly app, proxies Reddit API, handles OAuth, and uses Vercel KV for sessions/caching.",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
@@ -10,8 +10,12 @@
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.19.2",
+    "express-session": "^1.18.0",
     "node-fetch": "^2.7.0",
-    "@vercel/kv": "^2.0.0"
+    "simple-oauth2": "^5.0.0",
+    "@vercel/kv": "^2.0.0",
+    "@upstash/redis": "^1.30.0", 
+    "@upstash/connect": "^1.5.0" 
   },
   "devDependencies": {
     "nodemon": "^3.0.0"
